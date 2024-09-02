@@ -1,0 +1,47 @@
+name: Trigger auto deployment for chukcontainer
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - 'Dockerfile.txt/**'
+    - '.github/workflows/chukcontainer-AutoDeployTrigger-cf065d91-2093-4876-bb8e-961e1c1a802e.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.CHUKCONTAINER_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.CHUKCONTAINER_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.CHUKCONTAINER_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}/Dockerfile.txt 
+          registryUrl: chukcontainer.victoriousfield-91554a84.italynorth.azurecontainerapps.io
+          registryUsername: ${{ secrets.CHUKCONTAINER_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.CHUKCONTAINER_REGISTRY_PASSWORD }}
+          containerAppName: chukcontainer
+          resourceGroup: testgrp
+          imageToBuild: chukcontainer.victoriousfield-91554a84.italynorth.azurecontainerapps.io/chukcontainer:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+
