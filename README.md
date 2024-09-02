@@ -7,3 +7,4 @@ Built a CI/CD Pipeline with Azure Pipelines - code from Azure repos is built and
 Code is tested and a production release pipeline is created to release code to production.
 
 Azure web app link - chukywebapp-chcpcrbha5czajet.italynorth-01.azurewebsites.net
+DEPLOY TO GITHUB
