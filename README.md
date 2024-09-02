@@ -6,5 +6,5 @@ Any changes to the code are reviewed and commit & push to the remote git reposit
 Built a CI/CD Pipeline with Azure Pipelines - code from Azure repos is built and deployed to the Azure web app running php PHP stack
 Code is tested and a production release pipeline is created to release code to production.
 
-Azure web app link - chukywebapp-chcpcrbha5czajet.italynorth-01.azurewebsites.net
+Azure web app link - "azurewebapplink".azurewebsites.net
 
